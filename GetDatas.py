@@ -1,11 +1,13 @@
 from datetime import date
 
 import requests
+import os
 
 LIGUEID = 4480
+KEY = os.environ.get("KEY")
 
 """
-reponse = requests.get(" https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id= "+ LIGUEID)
+reponse = requests.get(" https://www.thesportsdb.com/api/v1/json/"+KEY+"/eventsnextleague.php?id= "+ LIGUEID)
 
 print(reponse.content)
 """
@@ -62,23 +64,23 @@ def getResponseInDict(req):
 
 
 def getMatchsInfos(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/1/lookupevent.php?id=" + str(id))[0]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+KEY+"/lookupevent.php?id=" + str(id))[0]
     return reponse["strHomeTeam"], reponse["strAwayTeam"], reponse["strTime"]
 
 
 def getMatchStatus(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/1/lookupevent.php?id=" + str(id))[0]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+KEY+"/lookupevent.php?id=" + str(id))[0]
     return reponse["strStatus"]
 
 
 def getMatchUpdate(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/1/lookupevent.php?id=" + str(id))[0]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+KEY+"/lookupevent.php?id=" + str(id))[0]
     return ScorerParse(reponse["strHomeGoalDetails"]), ScorerParse(reponse["strAwayGoalDetails"]), \
            ScorerParse(reponse["strHomeRedCards"]), ScorerParse(reponse["strAwayRedCards"])
 
 
 def getmatchList():
-    reponse = getResponseInDict(" https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id="+str(LIGUEID))
+    reponse = getResponseInDict(" https://www.thesportsdb.com/api/v1/json/"+KEY+"/eventsnextleague.php?id="+str(LIGUEID))
     today = date.today().strftime("%Y-%m-%d")
     RET = []
     for m in reponse:
