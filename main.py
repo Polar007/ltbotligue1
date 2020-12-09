@@ -1,9 +1,13 @@
-from GetDatas import *
 from schedule import *
 import schedule
 import time
-from twitt import *
 
+print("Importing....")
+
+from twitt import *
+from GetDatas import *
+
+print("import done!")
 
 class match:
     Id = ""
