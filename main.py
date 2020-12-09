@@ -9,6 +9,7 @@ from GetDatas import *
 
 print("import done!")
 
+
 class match:
     Id = ""
     Dom = ""
@@ -132,14 +133,16 @@ def getTag(team):
         "Lok. Moscow": "LOK",
         "SV Salzburg": "SVS",
         "Ath Madrid": "ATH",
-        "Real Madrid" : "MAD",
+        "Real Madrid": "MAD",
         "Mönchengladbach": "MOCH",
         "Inter": "INTER",
         "Shakhtar Donetsk": "SHD",
         "Man City": "CITY",
         "Marseille": "OM",
         "Olympiakos": "OLYM",
-        "FC Porto": "FCP"
+        "FC Porto": "FCP",
+        "Paris SG": "PSG",
+        "Istanbul Basaksehir": "BAS"
     }
     return D[team]
 
