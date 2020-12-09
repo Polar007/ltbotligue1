@@ -31,9 +31,10 @@ class match:
         self.LineupHome = ""
         self.LineupAway = ""
         self.Status = getMatchStatus(self.Id)
-        schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU)
+        schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
+        self.PrepareForMatch()
 
-    def PrepareForMatch(self, time):
+    def PrepareForMatch(self):
         schedule.every(30).seconds.do(self.actualisation).tag(self.Tag)
 
     def score(self):
