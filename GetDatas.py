@@ -5,6 +5,7 @@ import os
 
 LIGUEID = 4480
 KEY = os.environ.get("KEY")
+print(KEY)
 
 
 """
