@@ -1,12 +1,13 @@
 from os import path
+import os
 
 import tweepy
 
-APIKey = "SNe7BdvnmuMtARbbN4EabPJI6"
-APISecret = "60dIEdrcl5OVzxy7kvVmlisGaqEqeqICtCTDZfI5u4OFzvGS1J"
+APIKey = os.environ.get("APIKey")
+APISecret = os.environ.get("APISecret")
 
-ACCESToken = "1424013613-IZhfoFkn4kWr64oS954YD8R9EM4aSpEHQdJWWJD"
-ACCESTokenSecret = "2CqpfBPPfSXrriIGKNTWGmnLWlO7GCNDnAmNyZ8HCMvfw"
+ACCESToken = os.environ.get("ACCESSToken")
+ACCESTokenSecret = os.environ.get("ACCESSTokenSecret")
 
 auth = tweepy.OAuthHandler(APIKey, APISecret)
 auth.set_access_token(ACCESToken, ACCESTokenSecret)
