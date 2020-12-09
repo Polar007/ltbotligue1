@@ -31,10 +31,10 @@ class match:
         self.LineupHome = ""
         self.LineupAway = ""
         self.Status = getMatchStatus(self.Id)
-        schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU())
+        schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU)
 
     def PrepareForMatch(self, time):
-        schedule.every(30).seconds.do(self.actualisation()).tag(self.Tag)
+        schedule.every(30).seconds.do(self.actualisation).tag(self.Tag)
 
     def score(self):
         return str(len(self.ScorerDom)) + "-" + str(len(self.ScorerAway))
@@ -84,22 +84,35 @@ class match:
 
 
 def timeop(t, htoadd, mtoadd, stoadd):
-    hour = int(t[0:1]) - htoadd
-    min = int(t[2:3]) - mtoadd
+    hour = int(t[0:2]) + htoadd
+    min = int(t[3:5]) + mtoadd
     while min < 0:
         min += 60
         hour -= 1
     while min > 60:
         min -= 60
         hour += 1
-    sec = int(t[4:5]) - stoadd
+    sec = int(t[6:8]) + stoadd
     while sec < 0:
         sec += 60
         min -= 1
     while sec > 60:
         sec -= 60
         min += 1
-    return str(hour) + ":" + str(min) + ":" + str(sec)
+    if hour < 10:
+        hour = "0" + str(hour)
+    else:
+        hour = str(hour)
+    if min < 10:
+        min = "0" + str(min)
+    else:
+        min = str(min)
+    if sec < 10:
+        sec = "0" + str(sec)
+    else:
+        sec = str(sec)
+    ret = str(hour) + ":" + str(min) + ":" + str(sec)
+    return ret
 
 
 def getTag(team):
@@ -137,7 +150,7 @@ def SetUpDay():
 
 SetUpDay()
 
-schedule.every().day.at("10:30").do(SetUpDay())
+schedule.every().day.at("10:30").do(SetUpDay)
 
 while True:
     schedule.run_pending()
