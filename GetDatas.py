@@ -1,10 +1,11 @@
+import os
 from datetime import date
 
 import requests
-import os
+
 
 LIGUEID = 4480
-KEY = os.environ.get("KEY")
+KEY = os.environ["KEY"]
 print(KEY)
 
 

@@ -3,11 +3,11 @@ import os
 
 import tweepy
 
-APIKey = os.environ.get("APIKey")
-APISecret = os.environ.get("APISecret")
+APIKey = os.environ["APIKey"]
+APISecret = os.environ.get["APISecret"]
 
-ACCESToken = os.environ.get("ACCESSToken")
-ACCESTokenSecret = os.environ.get("ACCESSTokenSecret")
+ACCESToken = os.environ.get["ACCESSToken"]
+ACCESTokenSecret = os.environ.get["ACCESSTokenSecret"]
 
 auth = tweepy.OAuthHandler(APIKey, APISecret)
 auth.set_access_token(ACCESToken, ACCESTokenSecret)
