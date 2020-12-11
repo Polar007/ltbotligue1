@@ -155,8 +155,9 @@ MATCHS = []
 def SetUpDay():
     T = getmatchList()
     for id in T:
-        MATCHS.append(match(id))
-
+        m = match(id)
+        MATCHS.append(m)
+        TweetText("Match à venir: " + m.Tag)
 
 SetUpDay()
 
