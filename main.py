@@ -142,7 +142,9 @@ def getTag(team):
         "Olympiakos": "OLYM",
         "FC Porto": "FCP",
         "Paris SG": "PSG",
-        "Istanbul Basaksehir": "BAS"
+        "Istanbul Basaksehir": "BAS",
+        "St Etienne": "ASSE",
+        "Angers": "SCO"
     }
     return D[team]
 

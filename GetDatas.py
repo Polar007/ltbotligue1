@@ -4,7 +4,7 @@ from datetime import date
 import requests
 
 
-LIGUEID = 4480
+LIGUEID = 4334
 KEY = os.environ["KEY"]
 print(KEY)
 
