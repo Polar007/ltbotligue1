@@ -2,7 +2,7 @@ import os
 from datetime import date
 
 import requests
-
+import json
 
 LIGUEID = 4334
 LIGUENAME = "Ligue 1"
@@ -73,7 +73,7 @@ def getMatchsInfos(id):
 
 
 def getMatchUpdate():
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")[0]
+    reponse = json.loads("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")[0]
     toreturn=[]
     for r in reponse:
         if r["League"] == LIGUENAME:
