@@ -5,8 +5,8 @@ import requests
 import json
 
 LIGUEID = 4334
-LIGUENAME = "Ligue 1"
 KEY = os.environ["KEY"]
+KEY = 4013017
 print(KEY)
 
 
@@ -62,19 +62,24 @@ def parse_in_dictionary(str):
 def getResponseInDict(req):
     reponse = requests.get(req).content.decode(
         "UTF-8")
+    reponse2 = json.loads(reponse)
+    """
     reponse = epuration(reponse)
     reponse = parse_in_dictionary(reponse)
-    return reponse
+    """
+
+
+    return reponse2
 
 
 def getMatchsInfos(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/lookupevent.php?id=" + str(id))[0]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/lookupevent.php?id=" + str(id))["events"][0]
     return reponse["strHomeTeam"], reponse["strAwayTeam"], reponse["strTime"]
 
 
 def getMatchUpdate():
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")
-    toreturn=[]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")["teams"]["Match"]
+    toreturn = []
     for r in reponse:
         if r["League"] == LIGUENAME:
             toreturn.append(r)
@@ -82,7 +87,7 @@ def getMatchUpdate():
 
 
 def getmatchList():
-    reponse = getResponseInDict(" https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/eventsnextleague.php?id="+str(LIGUEID))
+    reponse = getResponseInDict(" https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/eventsnextleague.php?id="+str(LIGUEID))["events"]
     today = date.today().strftime("%Y-%m-%d")
     RET = []
     for m in reponse:

@@ -2,7 +2,6 @@ from os import path
 import os
 
 import tweepy
-
 APIKey = os.environ["APIKey"]
 APISecret = os.environ["APISecret"]
 
@@ -13,7 +12,6 @@ auth = tweepy.OAuthHandler(APIKey, APISecret)
 auth.set_access_token(ACCESToken, ACCESTokenSecret)
 
 api = tweepy.API(auth)
-
 
 def SearchGif(TeamTag):
     name = "GIFs/Gif " + TeamTag + ".gif"

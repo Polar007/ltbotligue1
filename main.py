@@ -9,6 +9,10 @@ from GetDatas import *
 
 print("import done!")
 
+def getmatch(L, n):
+    for m in L:
+        if m["HomeTeam"] == n:
+            return m
 
 def RepresentsInt(s):
     try:
@@ -40,7 +44,7 @@ class match:
         self.DomTag = getTag(self.Dom)
         self.AwayTag = getTag(self.Away)
         self.Tag = "#" + self.DomTag + self.AwayTag
-        up = getMatchUpdate()
+        up = getmatch(getMatchUpdate(), self.Dom)
         self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
         self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
         self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
@@ -184,11 +188,6 @@ SetUpDay()
 
 schedule.every().day.at("10:30").do(SetUpDay)
 
-
-def getmatch(L, n):
-    for m in L:
-        if m["HomeTeam"] == n:
-            return m
 
 
 def UpdateMatches():
