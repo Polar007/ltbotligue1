@@ -25,12 +25,24 @@ def SearchRedCard(TeamTag):
 
 
 def TweetText(text):
-    api.update_status(text)
-
+    try:
+        api.update_status(text)
+    except tweepy.TweepError as error:
+        if error.api_code == 187:
+            # Do nothing
+            print('duplicate message')
+        else:
+            raise error
 
 def TweetMedia(text, media):
-    api.update_with_media(media, text)
-
+    try:
+        api.update_with_media(media, text)
+    except tweepy.TweepError as error:
+        if error.api_code == 187:
+            # Do nothing
+            print('duplicate message')
+        else:
+            raise error
 
 def TweetStart(Dom, Away, Tag):
     TweetText("1': Coup d'envoi du match entre " + Dom + " et " + Away + "!\n\n" + Tag + " (0-0)")
