@@ -120,6 +120,9 @@ class match:
                 TweetRedCard(self.AwayTag, s[1], s[0], self.Tag, self.score())
 
     def getLU(self):
+        up = getmatch(getMatchUpdate(), self.Dom)
+        self.LineupHome = up["HomeLineupGoalkeeper"] + "\n" + up["HomeLineupDefense"] + "\n" + up["HomeLineupMidfield"] + "\n" + up["HomeLineupForward"]
+        self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up["AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
         TweetText("La compo de " + self.DomTag + ":\n\n" + self.LineupHome + "\n\nLa compo de " + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag )
         return
 
