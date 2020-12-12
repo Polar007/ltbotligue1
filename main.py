@@ -45,13 +45,20 @@ class match:
         self.AwayTag = getTag(self.Away)
         self.Tag = "#" + self.DomTag + self.AwayTag
         up = getmatch(getMatchUpdate(), self.Dom)
-        self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
-        self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
-        self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
-        self.RedCardAway = ScorerParse(up["AwayTeamRedCardDetails"])
+        if up == None:
+            self.ScorerDom = []
+            self.ScorerAway = []
+            self.RedCardDom = []
+            self.RedCardAway = []
+            self.Status = ["Not Started"]
+        else:
+            self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
+            self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
+            self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
+            self.RedCardAway = ScorerParse(up["AwayTeamRedCardDetails"])
+            self.Status = up["Time"]
         self.LineupHome = ""
         self.LineupAway = ""
-        self.Status = up["Time"]
         schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
         schedule.every().day.at(timeop(self.Hour, 0, -5, 0)).do(self.PrepareForMatch).tag(self.Tag)
 
@@ -112,6 +119,7 @@ class match:
 
     def getLU(self):
         TweetText("Les compos de " + self.Tag + " sont sorties!")
+        return
 
 
 def timeop(t, htoadd, mtoadd, stoadd):
