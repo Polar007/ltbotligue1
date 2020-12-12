@@ -51,14 +51,16 @@ class match:
             self.RedCardDom = []
             self.RedCardAway = []
             self.Status = ["Not Started"]
+            self.LineupHome = ""
+            self.LineupAway = ""
         else:
             self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
             self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
             self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
             self.RedCardAway = ScorerParse(up["AwayTeamRedCardDetails"])
             self.Status = up["Time"]
-        self.LineupHome = ""
-        self.LineupAway = ""
+            self.LineupHome = up["HomeLineupGoalkeeper"] + "\n" + up["HomeLineupDefense"] + "\n" + up["HomeLineupMidfield"] + "\n" + up["HomeLineupForward"]
+            self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up["AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
         schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
         schedule.every().day.at(timeop(self.Hour, 0, -5, 0)).do(self.PrepareForMatch).tag(self.Tag)
 
@@ -118,7 +120,7 @@ class match:
                 TweetRedCard(self.AwayTag, s[1], s[0], self.Tag, self.score())
 
     def getLU(self):
-        TweetText("Les compos de " + self.Tag + " sont sorties!")
+        TweetText("La compo de " + self.DomTag + ":\n\n" + self.LineupHome + "\n\nLa compo de " + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag )
         return
 
 
