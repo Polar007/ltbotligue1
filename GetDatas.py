@@ -104,15 +104,15 @@ def ScorerParse(sc):
     while i < len(sc):
         D = []
         deb = i
-        while str[i] != ":":
+        while sc[i] != ":":
             i += 1
         sep = i
-        while str[i] != ";":
+        while sc[i] != ";":
             i += 1
-        min = str[deb:sep]
-        but = str[sep + 1:i]
-        D[0] = min
-        D[1] = but
+        min = sc[deb:sep]
+        but = sc[sep + 1:i]
+        D.append(min)
+        D.append(but)
         T.append(D)
         i += 1
     return T
