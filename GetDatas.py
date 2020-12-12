@@ -5,6 +5,7 @@ import requests
 
 
 LIGUEID = 4334
+LIGUENAME = "Ligue 1"
 KEY = os.environ["KEY"]
 print(KEY)
 
@@ -71,15 +72,13 @@ def getMatchsInfos(id):
     return reponse["strHomeTeam"], reponse["strAwayTeam"], reponse["strTime"]
 
 
-def getMatchStatus(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/lookupevent.php?id=" + str(id))[0]
-    return reponse["strStatus"]
-
-
 def getMatchUpdate(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/lookupevent.php?id=" + str(id))[0]
-    return ScorerParse(reponse["strHomeGoalDetails"]), ScorerParse(reponse["strAwayGoalDetails"]), \
-           ScorerParse(reponse["strHomeRedCards"]), ScorerParse(reponse["strAwayRedCards"])
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php?id=" + str(id))[0]
+    toreturn=[]
+    for r in reponse:
+        if r["League"] == LIGUENAME:
+            toreturn.append(r)
+    return toreturn
 
 
 def getmatchList():

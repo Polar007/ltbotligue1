@@ -10,6 +10,14 @@ from GetDatas import *
 print("import done!")
 
 
+def RepresentsInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+
 class match:
     Id = ""
     Dom = ""
@@ -32,38 +40,51 @@ class match:
         self.DomTag = getTag(self.Dom)
         self.AwayTag = getTag(self.Away)
         self.Tag = "#" + self.DomTag + self.AwayTag
-        self.ScorerDom, self.ScorerAway, self.RedCardDom, self.RedCardAway = getMatchUpdate(self.Id)
+        up = getMatchUpdate()
+        self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
+        self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
+        self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
+        self.RedCardAway = ScorerParse(up["AwayTeamRedCardDetails"])
         self.LineupHome = ""
         self.LineupAway = ""
-        self.Status = getMatchStatus(self.Id)
+        self.Status = up["Time"]
         schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
-        self.PrepareForMatch()
+        schedule.every().day.at(timeop(self.Hour, 0, -5, 0)).do(self.PrepareForMatch).tag(self.Tag)
 
     def PrepareForMatch(self):
-        schedule.every(30).seconds.do(self.actualisation).tag(self.Tag)
+        MATCHSDUJOUR.remove(self)
+        MATCHSENCOURS.append(self)
 
     def score(self):
         return str(len(self.ScorerDom)) + "-" + str(len(self.ScorerAway))
 
-    def actualisation(self):
+    def actualisation(self, MU):
         stat = self.Status
         if stat == "FMT" or stat == "SMT":
-            self.match_update()
-            self.time_update()
+            self.match_update(ScorerParse(MU["HomeGoalDetails"]), ScorerParse(MU["AwayGoalDetails"]),
+                              ScorerParse(MU["HomeTeamRedCardDetails"]), ScorerParse(MU["AwayTeamRedCardDetails"]))
+            self.time_update(MU["Time"])
         else:
-            self.time_update()
-            self.match_update()
+            self.time_update(MU["Time"])
+            self.match_update(ScorerParse(MU["HomeGoalDetails"]), ScorerParse(MU["AwayGoalDetails"]),
+                              ScorerParse(MU["HomeTeamRedCardDetails"]), ScorerParse(MU["AwayTeamRedCardDetails"]))
 
-    def time_update(self):
-        stat = getMatchStatus(self.Id)
+    def time_update(self, stat):
         if self.Status != stat:
-            self.Status = stat
             if stat == "Match Finished":
                 TweetFin(self.Dom, self.Away, self.Tag, self.score())
                 schedule.clear(self.Tag)
+                del self
+            if stat == "Halftime":
+                TweetMT(self.Dom, self.Away, self.Tag, self.score())
+            if RepresentsInt(stat) and not RepresentsInt(self.Status):
+                if int(stat) < 40:
+                    TweetStart(self.Dom, self.Away, self.Tag)
+                else:
+                    TweetRep(self.Dom, self.Away, self.Tag, self.score())
+            self.Status = stat
 
-    def match_update(self):
-        ScorD, ScorA, RCD, RCA = getMatchUpdate(self.Id)
+    def match_update(self, ScorD, ScorA, RCD, RCA):
         if len(ScorD) != len(self.ScorerDom):
             NS = ScorD[len(self.ScorerDom):]
             for s in NS:
@@ -86,7 +107,7 @@ class match:
                 TweetRedCard(self.AwayTag, s[1], s[0], self.Tag, self.score())
 
     def getLU(self):
-        return ""
+        TweetText("Les compos de " + self.Tag + " sont sorties!")
 
 
 def timeop(t, htoadd, mtoadd, stoadd):
@@ -125,43 +146,58 @@ def getTag(team):
     D = {
         "Lyon": "OL",
         "Stade de Reims": "SDR",
-        "Ajax": "AJAX",
-        "Atalanta": "ATAL",
-        "FC Midtjylland": "FCM",
-        "Liverpool": "LIV",
-        "Bayern Munich": "FCB",
-        "Lok. Moscow": "LOK",
-        "SV Salzburg": "SVS",
-        "Ath Madrid": "ATH",
-        "Real Madrid": "MAD",
-        "Mönchengladbach": "MOCH",
-        "Inter": "INTER",
-        "Shakhtar Donetsk": "SHD",
-        "Man City": "CITY",
         "Marseille": "OM",
-        "Olympiakos": "OLYM",
-        "FC Porto": "FCP",
         "Paris SG": "PSG",
-        "Istanbul Basaksehir": "BAS",
         "St Etienne": "ASSE",
-        "Angers": "SCO"
+        "Angers": "SCO",
+        "Monaco": "ASM",
+        "Montpellier": "MHSC",
+        "Lens": "RCL",
+        "Lille": "LOSC",
+        "Bordeaux": "FCGB",
+        "Brest": "SB29",
+        "Lorient": "FCL",
+        "Nimes": "NO",
+        "Strasbourg": "RCSA",
+        "Metz": "FCM",
+        "Nice": "OGCN",
+        "Rennes": "SRFC",
+        "Nantes": "FCN",
+        "Dijon": "DFCO"
     }
     return D[team]
 
 
-MATCHS = []
+MATCHSDUJOUR = []
+MATCHSENCOURS = []
 
 
 def SetUpDay():
     T = getmatchList()
     for id in T:
         m = match(id)
-        MATCHS.append(m)
+        MATCHSDUJOUR.append(m)
         TweetText("Match à venir: " + m.Tag)
+
 
 SetUpDay()
 
 schedule.every().day.at("10:30").do(SetUpDay)
+
+
+def getmatch(L, n):
+    for m in L:
+        if m["HomeTeam"] == n:
+            return m
+
+
+def UpdateMatches():
+    if len(MATCHSENCOURS) == 0:
+        return
+    Matches_Updates = getMatchUpdate()
+    for m in MATCHSENCOURS:
+        m.actualisation(getmatch(Matches_Updates, m.Dom))
+
 
 while True:
     schedule.run_pending()
