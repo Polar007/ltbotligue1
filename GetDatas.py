@@ -72,8 +72,8 @@ def getMatchsInfos(id):
     return reponse["strHomeTeam"], reponse["strAwayTeam"], reponse["strTime"]
 
 
-def getMatchUpdate(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php?id=" + str(id))[0]
+def getMatchUpdate():
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")[0]
     toreturn=[]
     for r in reponse:
         if r["League"] == LIGUENAME:
