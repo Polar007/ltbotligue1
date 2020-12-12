@@ -73,7 +73,7 @@ def getMatchsInfos(id):
 
 
 def getMatchUpdate():
-    reponse = json.loads("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")[0]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")
     toreturn=[]
     for r in reponse:
         if r["League"] == LIGUENAME:
