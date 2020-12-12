@@ -5,8 +5,8 @@ import requests
 import json
 
 LIGUEID = 4334
+LIGUENAME = "Ligue 1"
 KEY = os.environ["KEY"]
-KEY = 4013017
 print(KEY)
 
 
