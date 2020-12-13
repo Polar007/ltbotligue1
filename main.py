@@ -50,17 +50,17 @@ class match:
             self.ScorerAway = []
             self.RedCardDom = []
             self.RedCardAway = []
-            self.Status = ["Not Started"]
+            self.Status = "Not Started"
             self.LineupHome = ""
             self.LineupAway = ""
         else:
-            self.ScorerDom = ScorerParse(up["HomeGoalDetails"])
-            self.ScorerAway = ScorerParse(up["AwayGoalDetails"])
-            self.RedCardDom = ScorerParse(up["HomeTeamRedCardDetails"])
-            self.RedCardAway = ScorerParse(up["AwayTeamRedCardDetails"])
-            self.Status = up["Time"]
-            self.LineupHome = up["HomeLineupGoalkeeper"] + "\n" + up["HomeLineupDefense"] + "\n" + up["HomeLineupMidfield"] + "\n" + up["HomeLineupForward"]
-            self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up["AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
+            self.ScorerDom = ScorerParse(up.get("HomeGoalDetails",[]))
+            self.ScorerAway = ScorerParse(up.get("AwayGoalDetails",[]))
+            self.RedCardDom = ScorerParse(up.get("HomeTeamRedCardDetails",[]))
+            self.RedCardAway = ScorerParse(up.get("AwayTeamRedCardDetails",[]))
+            self.Status = up.get("Time","Not Started")
+            self.LineupHome = up.get("HomeLineupGoalkeeper","") + "\n" + up.get("HomeLineupDefense","") + "\n" + up.get("HomeLineupMidfield","") + "\n" + up.get("HomeLineupForward","")
+            self.LineupAway = up.get("AwayLineupGoalkeeper","") + "\n" + up.get("AwayLineupDefense","") + "\n" + up.get("AwayLineupMidfield","") + "\n" + up.get("AwayLineupForward","")
         schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
         schedule.every().day.at(timeop(self.Hour, 0, -5, 0)).do(self.PrepareForMatch).tag(self.Tag)
 
