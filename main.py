@@ -219,6 +219,7 @@ def getTag(team):
 
 
 MATCHSDUJOUR = []
+MATCHSENCOURS = []
 
 
 def SetUpDay():
