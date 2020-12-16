@@ -10,7 +10,6 @@ from GetDatas import *
 
 print("import done!")
 
-
 def getmatch(L, n):
     for m in L:
         if m["HomeTeam"] == n:
@@ -154,9 +153,9 @@ class match:
         self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up[
             "AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
         TweetText(
-            "La compo de " + self.DomTag + ":\n\n" + self.LineupHome + "\n\n" + self.Tag)
+            "La compo de #" + self.DomTag + ":\n\n" + self.LineupHome + "\n\n" + self.Tag)
         TweetText(
-            "La compo de " + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag)
+            "La compo de #" + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag)
         return
 
 

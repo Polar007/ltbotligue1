@@ -63,12 +63,12 @@ def TweetFin(Dom, Away, Tag, Score):
 def TweetGoal(TeamTag, Scorer, Min, Tag, Score):
     Gif = SearchGif(TeamTag)
     if Gif == "NOTEX":
-        TweetText(Min + "': BUUUUUUUUUUUUUT pour" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")")
-    TweetMedia(Min + "': BUUUUUUUUUUUUUT pour" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")", Gif)
+        TweetText(Min + "': BUUUUUUUUUUUUUT  #" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")")
+    TweetMedia(Min + "': BUUUUUUUUUUUUUT pour #" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")", Gif)
 
 
 def TweetRedCard(TeamTag, Player, Min, Tag, Score):
     Gif = SearchRedCard(TeamTag)
     if Gif == "NOTEX":
-        TweetText(Min + "': CARTON ROUGE POUR " + TeamTag + "! " + Player + "est expulsé!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))
-    TweetMedia(Min + "': CARTON ROUGE POUR " + Player + "!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))
+        TweetText(Min + "': CARTON ROUGE POUR #" + TeamTag + "! " + Player + "est expulsé!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))
+    TweetMedia(Min + "': CARTON ROUGE POUR #" + Player + "!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))

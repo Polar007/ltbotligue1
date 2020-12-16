@@ -1,5 +1,6 @@
 import os
 from datetime import date
+from datetime import datetime
 
 import requests
 import json
@@ -8,7 +9,6 @@ LIGUEID = 4334
 LIGUENAME = "Ligue 1"
 KEY = os.environ["KEY"]
 print(KEY)
-
 
 """
 reponse = requests.get(" https://www.thesportsdb.com/api/v1/json/"+KEY+"/eventsnextleague.php?id= "+ LIGUEID)
@@ -68,17 +68,19 @@ def getResponseInDict(req):
     reponse = parse_in_dictionary(reponse)
     """
 
-
     return reponse2
 
 
 def getMatchsInfos(id):
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/lookupevent.php?id=" + str(id))["events"][0]
+    reponse = \
+    getResponseInDict("https://www.thesportsdb.com/api/v1/json/" + str(KEY) + "/lookupevent.php?id=" + str(id))[
+        "events"][0]
     return reponse["strHomeTeam"], reponse["strAwayTeam"], reponse["strTime"]
 
 
 def getMatchUpdate():
-    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/latestsoccer.php")["teams"]["Match"]
+    reponse = getResponseInDict("https://www.thesportsdb.com/api/v1/json/" + str(KEY) + "/latestsoccer.php")["teams"][
+        "Match"]
     toreturn = []
     for r in reponse:
         if r["League"] == LIGUENAME:
@@ -86,18 +88,37 @@ def getMatchUpdate():
     return toreturn
 
 
+def isover(t1):
+    t2 = datetime.now().strftime("%H-%M-%S")
+    h1, m1, s1 = int(t1[0:2]), int(t1[3:5]), int(t1[6:8])
+    h2, m2, s2 = int(t2[0:2]), int(t2[3:5]), int(t2[6:8])
+    h1 += 1
+    if h2 - h1 > 2:
+        return True
+    if h2 - h1 < 2:
+        return False
+    if m1 < m2:
+        return True
+    if m1 > m2:
+        return False
+    if s1 > s2:
+        return False
+    return True
+
+
 def getmatchList():
-    reponse = getResponseInDict(" https://www.thesportsdb.com/api/v1/json/"+str(KEY)+"/eventsnextleague.php?id="+str(LIGUEID))["events"]
+    reponse = getResponseInDict(
+        " https://www.thesportsdb.com/api/v1/json/" + str(KEY) + "/eventsnextleague.php?id=" + str(LIGUEID))["events"]
     today = date.today().strftime("%Y-%m-%d")
     RET = []
     for m in reponse:
-        if m["dateEvent"] == today:
+        if m["dateEvent"] == today and not isover(m["strTime"]):
             RET.append(m["idEvent"])
     return RET
 
 
 def ScorerParse(sc):
-    if sc==None:
+    if sc == None:
         return []
     T = []
     i = 0
