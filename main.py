@@ -94,7 +94,6 @@ class match:
             schedule.every().day.at(timeop(self.Hour, 0, 55, 0)).do(self.PrepareForMatch).tag(self.Tag)
 
     def PrepareForMatch(self):
-        MATCHSDUJOUR.remove(self)
         MATCHSENCOURS.append(self)
 
     def score(self):
@@ -220,7 +219,6 @@ def getTag(team):
 
 
 MATCHSDUJOUR = []
-MATCHSENCOURS = []
 
 
 def SetUpDay():
