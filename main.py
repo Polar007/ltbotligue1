@@ -245,4 +245,5 @@ def UpdateMatches():
 
 while True:
     schedule.run_pending()
+    UpdateMatches()
     time.sleep(1)
