@@ -117,12 +117,12 @@ class match:
                 del self
             if stat.lower() == "halftime":
                 TweetMT(self.Dom, self.Away, self.Tag, self.score())
-            if RepresentsInt(stat) and not RepresentsInt(self.Status):
+            if RepresentsInt(stat[:-1]) and (not RepresentsInt(self.Status)):
                 if int(stat) < 40:
                     TweetStart(self.Dom, self.Away, self.Tag)
                 else:
                     TweetRep(self.Dom, self.Away, self.Tag, self.score())
-            self.Status = stat
+            self.Status = stat[:-1]
 
     def match_update(self, ScorD, ScorA, RCD, RCA):
         if len(ScorD) != len(self.ScorerDom):
