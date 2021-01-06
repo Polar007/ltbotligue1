@@ -2,6 +2,7 @@ from os import path
 import os
 
 import tweepy
+
 APIKey = os.environ["APIKey"]
 APISecret = os.environ["APISecret"]
 
@@ -13,10 +14,18 @@ auth.set_access_token(ACCESToken, ACCESTokenSecret)
 
 api = tweepy.API(auth)
 
+
 def SearchGif(TeamTag):
     name = "GIFs/Gif " + TeamTag + ".gif"
     if path.exists(name):
         return "GIFs/Gif " + TeamTag + ".gif"
+    return "NOTEX"
+
+
+def SearchLogo(TeamTag):
+    name = "COMPOS/" + TeamTag + ".png"
+    if path.exists(name):
+        return "COMPOS/" + TeamTag + ".png"
     return "NOTEX"
 
 
@@ -25,6 +34,7 @@ def SearchRedCard(TeamTag):
     if path.exists(name):
         return "CartonsRouges/" + TeamTag + ".jpg"
     return "NOTEX"
+
 
 def TweetText(text):
     try:
@@ -36,15 +46,21 @@ def TweetText(text):
         else:
             raise error
 
+
 def TweetMedia(text, media):
     try:
-        api.update_with_media(media, text)
+        media_ids = []
+        for filename in media:
+            res = api.media_upload(filename)
+            media_ids.append(res.media_id)
+        api.update_status(status=text, media_ids=media_ids)
     except tweepy.TweepError as error:
         if error.api_code == 187:
             # Do nothing
             print('duplicate message')
         else:
             raise error
+
 
 def TweetStart(Dom, Away, Tag):
     TweetText("1': Coup d'envoi du match entre " + Dom + " et " + Away + "!\n\n" + Tag + " (0-0)")
@@ -66,11 +82,32 @@ def TweetGoal(TeamTag, Scorer, Min, Tag, Score):
     Gif = SearchGif(TeamTag)
     if Gif == "NOTEX":
         TweetText(Min + "': BUUUUUUUUUUUUUT  #" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")")
-    TweetMedia(Min + "': BUUUUUUUUUUUUUT pour #" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")", Gif)
+    else:
+        TweetMedia(Min + "': BUUUUUUUUUUUUUT pour #" + TeamTag + " de " + Scorer + "!\n\n" + Tag + " (" + Score + ")",
+                   [Gif])
 
 
 def TweetRedCard(TeamTag, Player, Min, Tag, Score):
     Gif = SearchRedCard(TeamTag)
     if Gif == "NOTEX":
-        TweetText(Min + "': CARTON ROUGE POUR #" + TeamTag + "! " + Player + "est expulsé!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))
-    TweetMedia(Min + "': CARTON ROUGE POUR #" + Player + "!\n\n" + Tag + " (" + Score + ")", SearchRedCard(TeamTag))
+        TweetText(
+            Min + "': CARTON ROUGE POUR #" + TeamTag + "! " + Player + "est expulsé!\n\n" + Tag + " (" + Score + ")")
+    else:
+        TweetMedia(Min + "': CARTON ROUGE POUR #" + Player + "!\n\n" + Tag + " (" + Score + ")", [Gif])
+
+
+def TweetAnnonce(text, Dom, Ext):
+    GifD = SearchLogo(Dom)
+    GifE = SearchLogo(Ext)
+    if GifE == "NOTEX" or GifD == "NOTEX":
+        TweetText(text)
+    else:
+        TweetMedia(text, [GifD, GifE])
+
+
+def TweetLU(text, Tag):
+    Gif = SearchLogo(Tag)
+    if Gif == "NOTEX":
+        TweetText(text)
+    else:
+        TweetMedia(text, [Gif])

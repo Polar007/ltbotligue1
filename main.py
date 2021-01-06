@@ -10,6 +10,7 @@ from GetDatas import *
 
 print("import done!")
 
+
 def getmatch(L, n):
     for m in L:
         if m["HomeTeam"] == n:
@@ -78,10 +79,10 @@ class match:
             self.RedCardAway = ScorerParse(up.get("AwayTeamRedCardDetails", []))
             self.Status = up.get("Time", "Not Started")
             self.LineupHome = up.get("HomeLineupGoalkeeper", "") + "\n\n" + up.get("HomeLineupDefense",
-                                                                                 "") + "\n\n" + up.get(
+                                                                                   "") + "\n\n" + up.get(
                 "HomeLineupMidfield", "") + "\n\n" + up.get("HomeLineupForward", "")
             self.LineupAway = up.get("AwayLineupGoalkeeper", "") + "\n\n" + up.get("AwayLineupDefense",
-                                                                                 "") + "\n\n" + up.get(
+                                                                                   "") + "\n\n" + up.get(
                 "AwayLineupMidfield", "") + "\n\n" + up.get("AwayLineupForward", "")
         if islaterthan(datetime.now().strftime("%H:%M:%S"), timeop(self.Hour, 0, -30, 0)):
             self.getLU()
@@ -152,10 +153,10 @@ class match:
             "HomeLineupMidfield"] + "\n" + up["HomeLineupForward"]
         self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up[
             "AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
-        TweetText(
-            "La compo de #" + self.DomTag + ":\n\n" + self.LineupHome + "\n\n" + self.Tag)
-        TweetText(
-            "La compo de #" + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag)
+        TweetLU(
+            "La compo de #" + self.DomTag + ":\n\n" + self.LineupHome + "\n\n" + self.Tag, self.DomTag)
+        TweetLU(
+            "La compo de #" + self.AwayTag + ":\n\n" + self.LineupAway + "\n\n" + self.Tag, self.AwayTag)
         return
 
 
@@ -226,7 +227,7 @@ def SetUpDay():
     for id in T:
         m = match(id)
         MATCHSDUJOUR.append(m)
-        TweetText("Match à venir: " + m.Tag)
+        TweetAnnonce("Match à venir: " + m.Tag, m.DomTag, m.AwayTag)
 
 
 SetUpDay()
