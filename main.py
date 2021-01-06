@@ -77,12 +77,12 @@ class match:
             self.RedCardDom = ScorerParse(up.get("HomeTeamRedCardDetails", []))
             self.RedCardAway = ScorerParse(up.get("AwayTeamRedCardDetails", []))
             self.Status = up.get("Time", "Not Started")
-            self.LineupHome = up.get("HomeLineupGoalkeeper", "") + "\n" + up.get("HomeLineupDefense",
-                                                                                 "") + "\n" + up.get(
-                "HomeLineupMidfield", "") + "\n" + up.get("HomeLineupForward", "")
-            self.LineupAway = up.get("AwayLineupGoalkeeper", "") + "\n" + up.get("AwayLineupDefense",
-                                                                                 "") + "\n" + up.get(
-                "AwayLineupMidfield", "") + "\n" + up.get("AwayLineupForward", "")
+            self.LineupHome = up.get("HomeLineupGoalkeeper", "") + "\n\n" + up.get("HomeLineupDefense",
+                                                                                 "") + "\n\n" + up.get(
+                "HomeLineupMidfield", "") + "\n\n" + up.get("HomeLineupForward", "")
+            self.LineupAway = up.get("AwayLineupGoalkeeper", "") + "\n\n" + up.get("AwayLineupDefense",
+                                                                                 "") + "\n\n" + up.get(
+                "AwayLineupMidfield", "") + "\n\n" + up.get("AwayLineupForward", "")
         if islaterthan(datetime.now().strftime("%H:%M:%S"), timeop(self.Hour, 0, -30, 0)):
             self.getLU()
         else:
@@ -111,11 +111,11 @@ class match:
 
     def time_update(self, stat):
         if self.Status != stat:
-            if stat == "Match Finished":
+            if stat.lower() == "match finished":
                 TweetFin(self.Dom, self.Away, self.Tag, self.score())
                 schedule.clear(self.Tag)
                 del self
-            if stat == "Halftime":
+            if stat.lower() == "halftime":
                 TweetMT(self.Dom, self.Away, self.Tag, self.score())
             if RepresentsInt(stat) and not RepresentsInt(self.Status):
                 if int(stat) < 40:

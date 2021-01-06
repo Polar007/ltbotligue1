@@ -21,8 +21,10 @@ def SearchGif(TeamTag):
 
 
 def SearchRedCard(TeamTag):
-    return ""
-
+    name = "CartonsRouges/" + TeamTag + ".jpg"
+    if path.exists(name):
+        return "CartonsRouges/" + TeamTag + ".jpg"
+    return "NOTEX"
 
 def TweetText(text):
     try:
