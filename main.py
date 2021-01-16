@@ -126,26 +126,38 @@ class match:
             self.Status = stat[:-1]
 
     def match_update(self, ScorD, ScorA, RCD, RCA):
-        if len(ScorD) != len(self.ScorerDom):
+        if len(ScorD) > len(self.ScorerDom):
             NS = ScorD[len(self.ScorerDom):]
             for s in NS:
-                self.ScorerDom.append(s)
-                TweetGoal(self.DomTag, s[1], s[0], self.Tag, self.score())
-        if len(ScorA) != len(self.ScorerAway):
+                if s[1] != "":
+                    self.ScorerDom.append(s)
+                    TweetGoal(self.DomTag, s[1], s[0], self.Tag, self.score())
+        if len(ScorA) > len(self.ScorerAway):
             NS = ScorA[len(self.ScorerAway):]
             for s in NS:
-                self.ScorerAway.append(s)
-                TweetGoal(self.AwayTag, s[1], s[0], self.Tag, self.score())
-        if len(RCD) != len(self.RedCardDom):
+                if s[1] != "":
+                    self.ScorerAway.append(s)
+                    TweetGoal(self.AwayTag, s[1], s[0], self.Tag, self.score())
+        if len(RCD) > len(self.RedCardDom):
             NS = RCD[len(self.RedCardDom):]
             for s in NS:
-                self.RedCardDom.append(s)
-                TweetRedCard(self.DomTag, s[1], s[0], self.Tag, self.score())
-        if len(RCA) != len(self.RedCardAway):
+                if s[1] != "":
+                    self.RedCardDom.append(s)
+                    TweetRedCard(self.DomTag, s[1], s[0], self.Tag, self.score())
+        if len(RCA) > len(self.RedCardAway):
             NS = RCA[len(self.RedCardAway):]
             for s in NS:
-                self.RedCardAway.append(s)
-                TweetRedCard(self.AwayTag, s[1], s[0], self.Tag, self.score())
+                if s[1] != "":
+                    self.RedCardAway.append(s)
+                    TweetRedCard(self.AwayTag, s[1], s[0], self.Tag, self.score())
+        if len(ScorD) < len(self.ScorerDom):
+            self.ScorerDom.pop()
+        if len(ScorA) < len(self.ScorerAway):
+            self.ScorerAway.pop()
+        if len(RCD) < len(self.RedCardDom):
+            self.RedCardDom.pop()
+        if len(RCA) < len(self.RedCardAway):
+            self.RedCardAway.pop()
 
     def getLU(self):
         up = getmatch(getMatchUpdate(), self.Dom)
