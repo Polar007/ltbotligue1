@@ -101,14 +101,14 @@ class match:
 
     def actualisation(self, MU):
         stat = self.Status
-        if stat == "FMT" or stat == "SMT":
+        if stat == "Not started" or stat == "halftime":
+            self.time_update(MU["Time"])
             self.match_update(ScorerParse(MU["HomeGoalDetails"]), ScorerParse(MU["AwayGoalDetails"]),
                               ScorerParse(MU["HomeTeamRedCardDetails"]), ScorerParse(MU["AwayTeamRedCardDetails"]))
-            self.time_update(MU["Time"])
         else:
-            self.time_update(MU["Time"])
             self.match_update(ScorerParse(MU["HomeGoalDetails"]), ScorerParse(MU["AwayGoalDetails"]),
                               ScorerParse(MU["HomeTeamRedCardDetails"]), ScorerParse(MU["AwayTeamRedCardDetails"]))
+            self.time_update(MU["Time"])
 
     def time_update(self, stat):
         if self.Status != stat:
@@ -232,8 +232,6 @@ def SetUpDay():
 
 SetUpDay()
 
-schedule.every().day.at("10:30").do(SetUpDay)
-
 
 def UpdateMatches():
     if len(MATCHSENCOURS) == 0:
@@ -243,7 +241,27 @@ def UpdateMatches():
         m.actualisation(getmatch(Matches_Updates, m.Dom))
 
 
+def get_next_day():
+    day = int(date.today().strftime("%d"))
+    month = int(date.today().strftime("%m"))
+    year = int(date.today().strftime("%Y"))
+    if day == 28 and month == 2 and year % 4 != 0:
+        return 1
+    if day == 29 and month == 2:
+        return 1
+    if day == 30 and (month == 4 or month == 6 or month == 9 or month == 11):
+        return 1
+    if day == 31:
+        return 1
+    return day + 1
+
+
+DATE_NEXT_REFRESH = get_next_day()
+
 while True:
+    if int(date.today().strftime("%d")) == DATE_NEXT_REFRESH and int(datetime.now().strftime("%H") >= 10):
+        SetUpDay()
+        DATE_NEXT_REFRESH = get_next_day()
     schedule.run_pending()
     UpdateMatches()
     time.sleep(1)
