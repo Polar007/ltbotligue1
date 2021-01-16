@@ -119,7 +119,7 @@ class match:
             if stat.lower() == "halftime":
                 TweetMT(self.Dom, self.Away, self.Tag, self.score())
             if RepresentsInt(stat[:-1]) and (not RepresentsInt(self.Status)):
-                if int(stat) < 40:
+                if int(stat[:-1]) < 40:
                     TweetStart(self.Dom, self.Away, self.Tag)
                 else:
                     TweetRep(self.Dom, self.Away, self.Tag, self.score())
