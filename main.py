@@ -64,12 +64,12 @@ class match:
         self.AwayTag = getTag(self.Away)
         self.Tag = "#" + self.DomTag + self.AwayTag
         up = getmatch(getMatchUpdate(), self.Dom)
-        if up == None:
+        self.Status = up.get("Time", "Not Started")
+        if up == None or self.Status != "Not Started":
             self.ScorerDom = []
             self.ScorerAway = []
             self.RedCardDom = []
             self.RedCardAway = []
-            self.Status = "Not Started"
             self.LineupHome = ""
             self.LineupAway = ""
         else:
@@ -77,7 +77,6 @@ class match:
             self.ScorerAway = ScorerParse(up.get("AwayGoalDetails", []))
             self.RedCardDom = ScorerParse(up.get("HomeTeamRedCardDetails", []))
             self.RedCardAway = ScorerParse(up.get("AwayTeamRedCardDetails", []))
-            self.Status = up.get("Time", "Not Started")
             self.LineupHome = up.get("HomeLineupGoalkeeper", "") + "\n\n" + up.get("HomeLineupDefense",
                                                                                    "") + "\n\n" + up.get(
                 "HomeLineupMidfield", "") + "\n\n" + up.get("HomeLineupForward", "")
@@ -271,7 +270,7 @@ def get_next_day():
 DATE_NEXT_REFRESH = get_next_day()
 
 while True:
-    if int(date.today().strftime("%d")) == DATE_NEXT_REFRESH and int(datetime.now().strftime("%H") >= 10):
+    if int(date.today().strftime("%d")) == DATE_NEXT_REFRESH and int(datetime.now().strftime("%H")) == 10:
         SetUpDay()
         DATE_NEXT_REFRESH = get_next_day()
     schedule.run_pending()
