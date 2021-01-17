@@ -161,10 +161,10 @@ class match:
 
     def getLU(self):
         up = getmatch(getMatchUpdate(), self.Dom)
-        self.LineupHome = up["HomeLineupGoalkeeper"] + "\n" + up["HomeLineupDefense"] + "\n" + up[
-            "HomeLineupMidfield"] + "\n" + up["HomeLineupForward"]
-        self.LineupAway = up["AwayLineupGoalkeeper"] + "\n" + up["AwayLineupDefense"] + "\n" + up[
-            "AwayLineupMidfield"] + "\n" + up["AwayLineupForward"]
+        self.LineupHome = up["HomeLineupGoalkeeper"] + "\n\n" + up["HomeLineupDefense"] + "\n\n" + up[
+            "HomeLineupMidfield"] + "\n\n" + up["HomeLineupForward"]
+        self.LineupAway = up["AwayLineupGoalkeeper"] + "\n\n" + up["AwayLineupDefense"] + "\n\n" + up[
+            "AwayLineupMidfield"] + "\n\n" + up["AwayLineupForward"]
         TweetLU(
             "La compo de #" + self.DomTag + ":\n\n" + self.LineupHome + "\n\n" + self.Tag, self.DomTag)
         TweetLU(
