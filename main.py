@@ -87,7 +87,7 @@ class match:
         if islaterthan(datetime.now().strftime("%H:%M:%S"), timeop(self.Hour, 0, -30, 0)):
             self.getLU()
         else:
-            schedule.every().day.at(timeop(self.Hour, 0, 30, 0)).do(self.getLU).tag(self.Tag)
+            schedule.every().day.at(timeop(self.Hour, 0, -30, 0)).do(self.getLU).tag(self.Tag)
         if islaterthan(datetime.now().strftime("%H:%M:%S"), timeop(self.Hour, 0, -5, 0)):
             self.PrepareForMatch()
         else:
