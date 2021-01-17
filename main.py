@@ -64,15 +64,16 @@ class match:
         self.AwayTag = getTag(self.Away)
         self.Tag = "#" + self.DomTag + self.AwayTag
         up = getmatch(getMatchUpdate(), self.Dom)
-        self.Status = up.get("Time", "Not Started")
-        if up == None or self.Status != "Not Started":
+        if up == None or up.get("Time", "Not Started") != "Not Started":
             self.ScorerDom = []
             self.ScorerAway = []
             self.RedCardDom = []
             self.RedCardAway = []
             self.LineupHome = ""
             self.LineupAway = ""
+            self.Status = "Not Started"
         else:
+            self.Status = up.get("Time", "Not Started")
             self.ScorerDom = ScorerParse(up.get("HomeGoalDetails", []))
             self.ScorerAway = ScorerParse(up.get("AwayGoalDetails", []))
             self.RedCardDom = ScorerParse(up.get("HomeTeamRedCardDetails", []))
